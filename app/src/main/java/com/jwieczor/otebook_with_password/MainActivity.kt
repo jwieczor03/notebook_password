@@ -17,10 +17,15 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.io.File
 import java.io.IOException
+import kotlin.toString
 
 class MainActivity : AppCompatActivity() {
 
+    private val MAX_LOGIN_ATTEMPTS = 5
+    private val LOCKOUT_DURATION = 300000 // 5 minutes in milliseconds
+
     private lateinit var editTextNote: EditText
+    private var isNavigatingToResetPassword = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         buttonLogout.setOnClickListener { logout() }
         val buttonResetPassword: Button = findViewById(R.id.buttonResetPassword)
         buttonResetPassword.setOnClickListener {
+            isNavigatingToResetPassword = true
             val intent = Intent(this, ResetPasswordActivity::class.java)
             startActivity(intent)
         }
@@ -61,6 +67,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        isNavigatingToResetPassword = false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!isNavigatingToResetPassword) {
+            logout()
+        }
     }
 
     private fun isLoggedIn(): Boolean {
@@ -74,6 +88,14 @@ class MainActivity : AppCompatActivity() {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+        val failedAttempts = sharedPreferences.getInt("failedAttempts", 0)
+        val lastAttemptTime = sharedPreferences.getLong("lastAttemptTime", 0)
+        val currentTime = System.currentTimeMillis()
+
+        if (failedAttempts >= MAX_LOGIN_ATTEMPTS && currentTime - lastAttemptTime < LOCKOUT_DURATION) {
+            return false
+        }
+
         return sharedPreferences.getBoolean("isLoggedIn", false)
     }
 
@@ -90,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         )
         with(sharedPreferences.edit()) {
             putBoolean("isLoggedIn", false)
+            putInt("failedAttempts", 0)
             apply()
         }
         val intent = Intent(this, LoginActivity::class.java)
@@ -98,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun editNote() {
-        val file = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "notatka.txt")
+        val file = File(filesDir, "notatka.txt")
         if (file.exists()) {
             val masterKey = MasterKey.Builder(this)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -123,7 +146,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun deleteNote() {
-        val file = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "notatka.txt")
+        val file = File(filesDir, "notatka.txt")
         if (file.exists()) {
             if (file.delete()) {
                 Toast.makeText(this, "Notatka usunięta.", Toast.LENGTH_SHORT).show()
@@ -138,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     private fun saveNote() {
         val note = editTextNote.text.toString()
         if (note.isNotEmpty()) {
-            val file = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "notatka.txt")
+            val file = File(filesDir, "notatka.txt")
             val masterKey = MasterKey.Builder(this)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
@@ -163,7 +186,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNote() {
-        val file = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "notatka.txt")
+        val file = File(filesDir, "notatka.txt")
         if (file.exists()) {
             val masterKey = MasterKey.Builder(this)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
