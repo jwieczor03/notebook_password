@@ -135,8 +135,38 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 val note = encryptedFile.openFileInput().bufferedReader().use { it.readText() }
-                editTextNote.setText(note)
-                Toast.makeText(this, "Notatka załadowana do edycji.", Toast.LENGTH_SHORT).show()
+                val editText = EditText(this)
+                editText.setText(note)
+
+                AlertDialog.Builder(this)
+                    .setTitle("Edytuj notatkę")
+                    .setView(editText)
+                    .setPositiveButton("Zapisz") { dialog, _ ->
+                        val newNote = editText.text.toString()
+                        if (newNote.isNotEmpty()) {
+                            if (file.delete()) {
+                                val newEncryptedFile = EncryptedFile.Builder(
+                                    this,
+                                    file,
+                                    masterKey,
+                                    EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+                                ).build()
+                                newEncryptedFile.openFileOutput().use { output ->
+                                    output.write(newNote.toByteArray())
+                                }
+                                Toast.makeText(this, "Notatka zapisana!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "Błąd podczas usuwania starej notatki.", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this, "Notatka nie może być pusta.", Toast.LENGTH_SHORT).show()
+                        }
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("Anuluj") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
             } catch (e: IOException) {
                 Toast.makeText(this, "Błąd odczytu: ${e.message}", Toast.LENGTH_SHORT).show()
             }
