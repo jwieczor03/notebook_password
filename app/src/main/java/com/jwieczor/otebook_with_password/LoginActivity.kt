@@ -2,6 +2,7 @@ package com.jwieczor.otebook_with_password
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -63,10 +64,12 @@ class LoginActivity : AppCompatActivity() {
             .setNegativeButtonText("Use account password")
             .build()
 
-        if (BiometricManager.from(this).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
-            biometricPrompt.authenticate(promptInfo)
-        } else {
-            Toast.makeText(this, "Biometric authentication is not available", Toast.LENGTH_SHORT).show()
+        findViewById<Button>(R.id.buttonLogin).setOnClickListener {
+            if (BiometricManager.from(this).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
+                biometricPrompt.authenticate(promptInfo)
+            } else {
+                Toast.makeText(this, "Biometric authentication is not available", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
