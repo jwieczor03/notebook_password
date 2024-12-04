@@ -1,81 +1,54 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <EditText
         android:id="@+id/editTextNote"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Wpisz swoją notatkę"
-        android:padding="16dp"
-        android:minHeight="48dp"
-        android:background="@drawable/edit_text_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
-        app:layout_constraintVertical_chainStyle="packed" />
+        android:hint="Enter your note here"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:gravity="top"
+        android:padding="8dp" />
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zapisz notatkę"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/editTextNote"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Save Note"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/buttonShow"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pokaż notatkę"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonSave"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Show Note"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/buttonEdit"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edytuj notatkę"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonShow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Edit Note"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/buttonDelete"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Usuń notatkę"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonEdit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Delete Note"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/buttonLogout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Wyloguj się"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonDelete"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/buttonResetPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Resetuj hasło"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Logout"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/holo_red_light" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

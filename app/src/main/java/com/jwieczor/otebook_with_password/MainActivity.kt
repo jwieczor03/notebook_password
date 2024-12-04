@@ -50,12 +50,6 @@ class MainActivity : AppCompatActivity() {
         buttonDelete.setOnClickListener { deleteNote() }
 
         buttonLogout.setOnClickListener { logout() }
-        val buttonResetPassword: Button = findViewById(R.id.buttonResetPassword)
-        buttonResetPassword.setOnClickListener {
-            isNavigatingToResetPassword = true
-            val intent = Intent(this, ResetPasswordActivity::class.java)
-            startActivity(intent)
-        }
 
         checkPermissions()
     }

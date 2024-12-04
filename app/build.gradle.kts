@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation ("androidx.biometric:biometric:1.2.0-alpha04")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
