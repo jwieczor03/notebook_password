@@ -59,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
         })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for my app")
-            .setSubtitle("Log in using your biometric credential")
-            .setNegativeButtonText("Use account password")
+            .setTitle("Biometric login for secure notebook")
+            .setSubtitle("Log in using your fingerprint")
+            .setNegativeButtonText("cancel")
             .build()
 
         findViewById<Button>(R.id.buttonLogin).setOnClickListener {

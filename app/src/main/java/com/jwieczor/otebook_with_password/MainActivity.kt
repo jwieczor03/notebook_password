@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,12 +16,10 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.io.File
 import java.io.IOException
-import kotlin.toString
-
 class MainActivity : AppCompatActivity() {
 
     private val MAX_LOGIN_ATTEMPTS = 5
-    private val LOCKOUT_DURATION = 300000 // 5 minutes in milliseconds
+    private val LOCKOUT_DURATION = 300000
 
     private lateinit var editTextNote: EditText
     private var isNavigatingToResetPassword = false
